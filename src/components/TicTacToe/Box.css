@@ -5,3 +5,11 @@
   align-items: center;
   font-size: 2rem;
 }
+
+.win {
+  background-color: green;
+}
+
+.draw {
+  background-color: red;
+}

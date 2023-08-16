@@ -1,6 +1,7 @@
 import Box from "./Box";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Board.css";
+import ResetGame from "./ResetGame";
 
 const Board = ({
   gameActive,
@@ -13,75 +14,69 @@ const Board = ({
 }) => {
   const [boxes, setBoxes] = useState(new Array(9).fill(""));
   const [marked, setMarked] = useState(new Array(9).fill(false));
+  const [winningBoxes, setWinningBoxes] = useState([]);
+  const [isDraw, setIsDraw] = useState(false);
 
-  // WHY ISNT CHECK WINNER WORKING??? not taking in account first click
   const checkWinner = (player) => {
+    const newWinningBoxes = [];
     winCombos.forEach((combo) => {
       const [a, b, c] = combo;
-      console.log(a, b, c, boxes[a], boxes[b], boxes[c]);
       if (boxes[a] === player && boxes[b] === player && boxes[c] === player) {
-        console.log("winner");
-      } else {
-        console.log("no");
+        console.log(a, b, c);
+        newWinningBoxes.push(a, b, c);
+        setGameActive(false);
+        setWinningBoxes(newWinningBoxes);
+      } else if (boxes.every((box) => box !== "")) {
+        setGameActive(false);
+        setIsDraw(true);
       }
     });
+    // setWinningBoxes(newWinningBoxes);
   };
 
-  // const markBox = (index) => {
-  //   if (gameActive) {
-  //     let newBoxes = [...boxes];
-  //     let checked = [...marked];
-  //     if (player1Turn && marked[index] !== true) {
-  //       newBoxes[index] = player1;
-  //       setBoxes((prevBoxes) => newBoxes);
-  //       setPlayer1Turn(false);
-  //       checked[index] = true;
-  //       setMarked((prevMarked) => checked);
-  //       checkWinner(player1);
-  //     }
-
-  //     if (!player1Turn && marked[index] !== true) {
-  //       newBoxes[index] = player2;
-  //       setBoxes((prevBoxes) => newBoxes);
-  //       checked[index] = true;
-  //       setMarked((prevMarked) => checked);
-  //       setPlayer1Turn(true);
-  //       checkWinner(player2);
-  //     }
-
-  //     // checkDraw();
-  //   }
-  // };
+  // Is there a better way to implement this besides setting player1Turn to false from the start? Had to use useEffect because console was one step behind the DOM.
+  useEffect(() => {
+    checkWinner(player1Turn ? player1 : player2);
+    setPlayer1Turn(!player1Turn);
+  }, [boxes]);
 
   const markBox = (index) => {
     if (gameActive && boxes[index] === "") {
       let newBoxes = [...boxes];
       let checked = [...marked];
       newBoxes[index] = player1Turn ? player1 : player2;
-      setBoxes((prevBoxes) => newBoxes);
-      player1Turn ? setPlayer1Turn(false) : setPlayer1Turn(true);
       checked[index] = true;
+      setBoxes((prevBoxes) => newBoxes);
       setMarked((prevMarked) => checked);
-      // checkWinner()
-
-      // checkDraw();
     }
   };
 
   return (
-    <div className="board">
-      {boxes.map((box, index) => {
-        return (
-          <Box
-            key={index}
-            index={index}
-            gameActive={gameActive}
-            markBox={markBox}
-            box={box}
-          />
-        );
-      })}
-    </div>
+    <>
+      <div className="board">
+        {boxes.map((box, index) => {
+          return (
+            <Box
+              key={index}
+              index={index}
+              gameActive={gameActive}
+              markBox={markBox}
+              box={box}
+              isWinningBox={winningBoxes.includes(index)}
+              isDraw={isDraw}
+            />
+          );
+        })}
+      </div>
+      <ResetGame
+        setGameActive={setGameActive}
+        setBoxes={setBoxes}
+        setMarked={setMarked}
+        setPlayer1Turn={setPlayer1Turn}
+        setWinningBoxes={setWinningBoxes}
+        setIsDraw={setIsDraw}
+      />
+    </>
   );
 };
 
