@@ -27,14 +27,24 @@ const Board = () => {
 
   return (
     <>
-      <div>Board</div>
       <Form getWord={getWord} checkGuess={checkGuess} guess={guess} />
       {guessHistory?.map((guess, index) => {
         return <Row key={index} guess={guess} word={word} />;
       })}
-      <h3>
+      <h3
+        className="game-message"
+        style={{
+          color: "black",
+          fontSize: "1.5rem",
+          letterSpacing: ".15rem",
+          textTransform: "uppercase",
+          lineHeight: "2.5rem",
+        }}
+      >
         {remainingGuess > 0
-          ? `Remaining Guesses: ${remainingGuess}`
+          ? wordleActive
+            ? `Remaining Guesses: ${remainingGuess}`
+            : `You Won! The word is ${word.toUpperCase()}`
           : `Game Over`}
       </h3>
     </>
