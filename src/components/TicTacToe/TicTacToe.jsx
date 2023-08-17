@@ -1,7 +1,9 @@
 import Board from "./Board";
 import "./TicTacToe.css";
 import { useState } from "react";
-const TicTacToe = () => {
+import ReturnToMenu from "../ReturnToMenu";
+
+const TicTacToe = ({ show, setShow }) => {
   // implement so that user can choose player vs hardcoding
   const player1 = "X";
   const player2 = "O";
@@ -24,8 +26,8 @@ const TicTacToe = () => {
   // };
 
   return (
-    <>
-      <main className="ttt-board">
+    <div className={show ? "show" : "hide"}>
+      <div className="ttt-board">
         <h1>Tic Tac Toe</h1>
         {/* <SelectPlayer handlePlayerSelection={handlePlayerSelection} /> */}
         <Board
@@ -37,8 +39,9 @@ const TicTacToe = () => {
           setPlayer1Turn={setPlayer1Turn}
           winCombos={winCombos}
         />
-      </main>
-    </>
+        <ReturnToMenu show={show} setShow={setShow} />
+      </div>
+    </div>
   );
 };
 
