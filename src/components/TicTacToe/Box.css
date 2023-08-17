@@ -7,9 +7,9 @@
 }
 
 .win {
-  background-color: green;
+  background-color: rgb(156, 108, 180);
 }
 
 .draw {
-  background-color: red;
+  background-color: rgb(255, 157, 0);
 }
