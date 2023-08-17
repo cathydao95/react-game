@@ -13,16 +13,15 @@ const Board = ({
   winCombos,
 }) => {
   const [boxes, setBoxes] = useState(new Array(9).fill(""));
-  const [marked, setMarked] = useState(new Array(9).fill(false));
   const [winningBoxes, setWinningBoxes] = useState([]);
   const [isDraw, setIsDraw] = useState(false);
 
-  const checkWinner = (player) => {
+  const checkWinner = () => {
+    let player = player1Turn ? "X" : "O";
     const newWinningBoxes = [];
     winCombos.forEach((combo) => {
       const [a, b, c] = combo;
       if (boxes[a] === player && boxes[b] === player && boxes[c] === player) {
-        console.log(a, b, c);
         newWinningBoxes.push(a, b, c);
         setGameActive(false);
         setWinningBoxes(newWinningBoxes);
@@ -31,23 +30,18 @@ const Board = ({
         setIsDraw(true);
       }
     });
-    // setWinningBoxes(newWinningBoxes);
   };
 
-  // Is there a better way to implement this besides setting player1Turn to false from the start? Had to use useEffect because console was one step behind the DOM.
   useEffect(() => {
-    checkWinner(player1Turn ? player1 : player2);
+    checkWinner();
     setPlayer1Turn(!player1Turn);
   }, [boxes]);
 
   const markBox = (index) => {
     if (gameActive && boxes[index] === "") {
       let newBoxes = [...boxes];
-      let checked = [...marked];
       newBoxes[index] = player1Turn ? player1 : player2;
-      checked[index] = true;
-      setBoxes((prevBoxes) => newBoxes);
-      setMarked((prevMarked) => checked);
+      setBoxes(newBoxes);
     }
   };
 
@@ -71,7 +65,6 @@ const Board = ({
       <ResetGame
         setGameActive={setGameActive}
         setBoxes={setBoxes}
-        setMarked={setMarked}
         setPlayer1Turn={setPlayer1Turn}
         setWinningBoxes={setWinningBoxes}
         setIsDraw={setIsDraw}

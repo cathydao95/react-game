@@ -5,7 +5,7 @@ const TicTacToe = () => {
   // implement so that user can choose player vs hardcoding
   const player1 = "X";
   const player2 = "O";
-  const [player1Turn, setPlayer1Turn] = useState(false);
+  const [player1Turn, setPlayer1Turn] = useState(true);
   const [gameActive, setGameActive] = useState(true);
 
   const winCombos = [

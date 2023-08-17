@@ -2,7 +2,6 @@ import "./ResetGame.css";
 
 const ResetGame = ({
   setBoxes,
-  setMarked,
   setPlayer1Turn,
   setWinningBoxes,
   setGameActive,
@@ -10,7 +9,6 @@ const ResetGame = ({
 }) => {
   const resetGame = () => {
     setBoxes(new Array(9).fill(""));
-    setMarked(new Array(9).fill(false));
     setGameActive(true);
     setWinningBoxes([]);
     setPlayer1Turn(false);
