@@ -1,0 +1,24 @@
+.letter {
+  border: 2px solid grey;
+  height: 70px;
+  width: 70px;
+  margin: 1rem 0;
+  text-align: center;
+  font-size: 2rem;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.grey {
+  background-color: grey;
+}
